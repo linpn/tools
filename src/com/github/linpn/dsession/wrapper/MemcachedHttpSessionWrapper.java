@@ -32,6 +32,7 @@ public class MemcachedHttpSessionWrapper implements HttpSession {
      *
      * @param cache   MemcachedClient 缓存对象
      * @param session HttpSession 对象
+     * @param ip      ip地址
      * @return 返回 Memcached HttpSession
      */
     public static HttpSession create(MemcachedClient cache, HttpSession session, String ip) {
@@ -44,7 +45,9 @@ public class MemcachedHttpSessionWrapper implements HttpSession {
      *
      * @param cache          MemcachedClient 缓存对象
      * @param jsessionid     SESSION的ID
+     * @param ip             ip地址
      * @param servletContext ServletContext 对象
+     * @param interval       超时时间, 单位：秒
      * @return 返回 Memcached HttpSession
      */
     public static HttpSession get(MemcachedClient cache, String jsessionid, String ip, ServletContext servletContext, int interval) {
@@ -58,6 +61,7 @@ public class MemcachedHttpSessionWrapper implements HttpSession {
      * @param cache          MemcachedClient 缓存对象
      * @param servletContext ServletContext 对象
      * @param jsessionid     SESSION的ID
+     * @param ip             ip地址
      * @param interval       超时时间, 单位：秒
      * @param isNew          是否是新创建, 新创建的会设置一些值
      */

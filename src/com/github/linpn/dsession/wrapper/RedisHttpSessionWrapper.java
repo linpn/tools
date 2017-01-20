@@ -38,6 +38,7 @@ public class RedisHttpSessionWrapper implements HttpSession {
      *
      * @param cache   RedisTemplate 缓存对象
      * @param session HttpSession 对象
+     * @param ip      ip地址
      * @return 返回 Redis HttpSession
      */
     public static HttpSession create(RedisTemplate<String, Object> cache, HttpSession session, String ip) {
@@ -54,8 +55,9 @@ public class RedisHttpSessionWrapper implements HttpSession {
      *
      * @param cache          RedisTemplate 缓存对象
      * @param jsessionid     SESSION的ID
+     * @param ip             ip地址
      * @param servletContext ServletContext 对象
-     * @return 返回 Redis HttpSession
+     * @return 返回 Memcached HttpSession
      */
     public static HttpSession get(RedisTemplate<String, Object> cache, String jsessionid, String ip, ServletContext servletContext) {
         RedisHttpSessionWrapper httpSession = new RedisHttpSessionWrapper(cache, jsessionid, ip, servletContext,

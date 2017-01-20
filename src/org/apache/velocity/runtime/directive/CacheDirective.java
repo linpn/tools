@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 
 /**
  * Velocity页面缓存宏。
- * <br/>
  * #cache('key', 分钟)
  * html_body
  * #end

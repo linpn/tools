@@ -7,8 +7,6 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.exception.VelocityException;
-import org.apache.velocity.runtime.directive.Parse;
-import org.apache.velocity.runtime.directive.StopCommand;
 import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
@@ -40,15 +38,15 @@ public class ImportDirective extends Parse {
 	 * iterates through the argument list and renders every argument that is
 	 * appropriate. Any non appropriate arguments are logged, but render()
 	 * continues.
-	 * 
-	 * @param context
-	 * @param writer
-	 * @param node
+	 *
+	 * @param context context
+	 * @param writer writer
+	 * @param node node
 	 * @return True if the directive rendered successfully.
-	 * @throws java.io.IOException
-	 * @throws ResourceNotFoundException
-	 * @throws ParseErrorException
-	 * @throws MethodInvocationException
+	 * @throws java.io.IOException IOException
+	 * @throws ResourceNotFoundException ResourceNotFoundException
+	 * @throws ParseErrorException ParseErrorException
+	 * @throws MethodInvocationException MethodInvocationException
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public boolean render(InternalContextAdapter context, Writer writer,

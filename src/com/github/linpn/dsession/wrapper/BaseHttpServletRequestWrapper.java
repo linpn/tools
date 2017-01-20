@@ -25,6 +25,7 @@ public class BaseHttpServletRequestWrapper extends HttpServletRequestWrapper {
     /**
      * 从Cookie或url中获取JSESSIONID
      *
+     * @param cookies cookies
      * @return 返回 JSESSIONID
      */
     public static String getSessionId(Cookie[] cookies) {
@@ -44,6 +45,7 @@ public class BaseHttpServletRequestWrapper extends HttpServletRequestWrapper {
     /**
      * 获取客户端真实IP
      *
+     * @param request request
      * @return 返回客户端真实IP
      */
     public static String getIpAddr(HttpServletRequest request) {
