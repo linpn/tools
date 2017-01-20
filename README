@@ -40,7 +40,7 @@
     </filter-class>
     <init-param>
         <param-name>servers</param-name>
-        <param-value>127.0.0.1</param-value>
+        <param-value>127.0.0.1:11211</param-value>
     </init-param>
     <init-param>
         <param-name>filterSuffix</param-name>
