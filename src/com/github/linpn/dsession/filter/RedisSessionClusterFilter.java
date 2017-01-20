@@ -1,9 +1,11 @@
 package com.github.linpn.dsession.filter;
 
 import com.github.linpn.dsession.wrapper.RedisHttpServletRequestWrapper;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.context.ContextLoader;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.web.filter.GenericFilterBean;
+import redis.clients.jedis.JedisPoolConfig;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,16 +22,30 @@ import java.io.IOException;
 public class RedisSessionClusterFilter extends GenericFilterBean {
 
     private static RedisTemplate<String, Object> cache;
-    private String redisTemplate;   // RedisTemplate 的 bean id
-    private String filterSuffix;    // 要过滤的扩展名
+
+    private String hostName = "localhost";
+    private int port = 6379;
+    private int maxTotal = 8;
+    private String filterSuffix = "*.js,*.css,*.png,*.jpg,*.gif,*.ico,*.tff,*.woff,*.svg,*.eot";
 
     @Override
     protected void initFilterBean() throws ServletException {
         try {
             //创建redisTemplate客户端
             if (cache == null) {
-                cache = ContextLoader.getCurrentWebApplicationContext().getBean(redisTemplate, RedisTemplate.class);
+                JedisPoolConfig poolConfig = new JedisPoolConfig();
+                poolConfig.setMaxTotal(maxTotal);
+                JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
+                connectionFactory.setHostName(hostName);
+                connectionFactory.setPort(port);
+                connectionFactory.setPoolConfig(poolConfig);
+                cache = new RedisTemplate();
+                cache.setConnectionFactory(connectionFactory);
+                cache.setKeySerializer(new StringRedisSerializer());
+                cache.setHashKeySerializer(new StringRedisSerializer());
+                this.setFilterSuffix(filterSuffix);
             }
+
         } catch (Exception e) {
             throw new ServletException("创建RedisTemplate出错", e);
         }
@@ -48,16 +64,18 @@ public class RedisSessionClusterFilter extends GenericFilterBean {
         }
     }
 
-    /**
-     * RedisTemplate 的 bean id
-     */
-    public void setRedisTemplate(String redisTemplate) {
-        this.redisTemplate = redisTemplate;
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
     }
 
-    /**
-     * 要过滤的扩展名
-     */
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void setMaxTotal(int maxTotal) {
+        this.maxTotal = maxTotal;
+    }
+
     public void setFilterSuffix(String filterSuffix) {
         this.filterSuffix = filterSuffix;
         this.filterSuffix = this.filterSuffix.replaceAll("\\s+", "");
@@ -65,5 +83,4 @@ public class RedisSessionClusterFilter extends GenericFilterBean {
         this.filterSuffix = this.filterSuffix.replaceAll("\\*", ".*");
         this.filterSuffix = this.filterSuffix.replaceAll(",", "\\$|") + "$";
     }
-
 }

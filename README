@@ -1,1 +1,53 @@
 通用工具包
+
+
+使用Redis Session, 在 web.xml 中加入:
+
+<filter>
+    <filter-name>sessionClusterFilter</filter-name>
+    <filter-class>
+        com.github.linpn.dsession.filter.RedisSessionClusterFilter
+    </filter-class>
+    <init-param>
+        <param-name>hostName</param-name>
+        <param-value>127.0.0.1</param-value>
+    </init-param>
+    <init-param>
+        <param-name>port</param-name>
+        <param-value>6379</param-value>
+    </init-param>
+    <init-param>
+        <param-name>maxTotal</param-name>
+        <param-value>8</param-value>
+    </init-param>
+    <init-param>
+        <param-name>filterSuffix</param-name>
+        <param-value>*.js,*.css,*.png,*.jpg,*.gif,*.ico,*.tff,*.woff,*.svg,*.eot</param-value>
+    </init-param>
+</filter>
+<filter-mapping>
+    <filter-name>sessionClusterFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+
+使用Memcached Session, 在 web.xml 中加入:
+
+<filter>
+    <filter-name>sessionClusterFilter</filter-name>
+    <filter-class>
+        com.github.linpn.dsession.filter.MemcachedSessionClusterFilter
+    </filter-class>
+    <init-param>
+        <param-name>servers</param-name>
+        <param-value>127.0.0.1</param-value>
+    </init-param>
+    <init-param>
+        <param-name>filterSuffix</param-name>
+        <param-value>*.js,*.css,*.png,*.jpg,*.gif,*.ico,*.tff,*.woff,*.svg,*.eot</param-value>
+    </init-param>
+</filter>
+<filter-mapping>
+    <filter-name>sessionClusterFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
