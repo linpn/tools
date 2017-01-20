@@ -1,8 +1,9 @@
-package org.apache.velocity.runtime.directive;
+package com.github.linpn.velocity.directive;
 
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.*;
 import org.apache.velocity.runtime.RuntimeServices;
+import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.context.ContextLoader;

@@ -1,4 +1,4 @@
-package org.springframework.web.support;
+package com.github.linpn.webtools.http;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,13 +25,13 @@ import java.util.*;
  *
  * @author Linpn
  */
-public class SpringMvcExtRequest extends HttpServletRequestWrapper implements HttpServletRequest, MultipartRequest {
+public class HttpServletExtRequest extends HttpServletRequestWrapper implements HttpServletRequest, MultipartRequest {
 
-    protected final static Log logger = LogFactory.getLog(SpringMvcExtRequest.class);
+    protected final static Log logger = LogFactory.getLog(HttpServletExtRequest.class);
 
     private HttpServletRequest request;
 
-    public SpringMvcExtRequest(HttpServletRequest request) {
+    public HttpServletExtRequest(HttpServletRequest request) {
         super(request);
         this.request = (HttpServletRequest) super.getRequest();
     }

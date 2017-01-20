@@ -1,6 +1,7 @@
-package org.springframework.web.servlet.handler;
+package com.github.linpn.spring.handler;
 
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

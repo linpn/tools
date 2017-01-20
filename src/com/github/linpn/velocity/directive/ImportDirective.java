@@ -1,4 +1,4 @@
-package org.apache.velocity.runtime.directive;
+package com.github.linpn.velocity.directive;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.app.event.EventHandlerUtil;
@@ -7,6 +7,8 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.exception.VelocityException;
+import org.apache.velocity.runtime.directive.Parse;
+import org.apache.velocity.runtime.directive.StopCommand;
 import org.apache.velocity.runtime.log.Log;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.apache.velocity.runtime.parser.node.SimpleNode;

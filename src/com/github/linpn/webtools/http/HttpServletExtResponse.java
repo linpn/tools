@@ -1,4 +1,4 @@
-package org.springframework.web.support;
+package com.github.linpn.webtools.http;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -14,11 +14,11 @@ import java.util.Locale;
  *
  * @author Linpn
  */
-public class SpringMvcExtResponse extends HttpServletResponseWrapper implements HttpServletResponse {
+public class HttpServletExtResponse extends HttpServletResponseWrapper implements HttpServletResponse {
 
     private HttpServletResponse response;
 
-    public SpringMvcExtResponse(HttpServletResponse response) {
+    public HttpServletExtResponse(HttpServletResponse response) {
         super(response);
         this.response = (HttpServletResponse) super.getResponse();
     }
