@@ -61,5 +61,4 @@ public class BaseHttpServletRequestWrapper extends HttpServletRequestWrapper {
         }
         return ip;
     }
-
 }
