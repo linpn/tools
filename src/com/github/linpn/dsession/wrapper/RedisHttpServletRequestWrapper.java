@@ -1,10 +1,8 @@
 package com.github.linpn.dsession.wrapper;
 
-import com.github.linpn.dsession.utils.SessionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 
 
@@ -13,7 +11,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Linpn
  */
-public class RedisHttpServletRequestWrapper extends HttpServletRequestWrapper {
+public class RedisHttpServletRequestWrapper extends BaseHttpServletRequestWrapper {
 
     private RedisTemplate<String, Object> cache;
     private final static String REQUEST_SESSION_CLUSTER_FILTER = "REQUEST_SESSION_CLUSTER_FILTER";
@@ -41,8 +39,8 @@ public class RedisHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
         //按cookie中的jsessionid获取分布式session
         if (session == null) {
-            String jsessionid = SessionUtils.getSessionId(super.getCookies());
-            String ip = SessionUtils.getIpAddr((HttpServletRequest) super.getRequest());
+            String jsessionid = this.getSessionId(super.getCookies());
+            String ip = this.getIpAddr((HttpServletRequest) super.getRequest());
 
             if (jsessionid != null) {
                 session = RedisHttpSessionWrapper.get(cache, jsessionid, ip, this.getServletContext());

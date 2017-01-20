@@ -1,11 +1,9 @@
 package com.github.linpn.dsession.wrapper;
 
 
-import com.github.linpn.dsession.utils.SessionUtils;
 import net.rubyeye.xmemcached.MemcachedClient;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
 
 
@@ -14,7 +12,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Linpn
  */
-public class MemcachedHttpServletRequestWrapper extends HttpServletRequestWrapper {
+public class MemcachedHttpServletRequestWrapper extends BaseHttpServletRequestWrapper {
 
     private MemcachedClient cache;
     private final static String REQUEST_SESSION_CLUSTER_FILTER = "REQUEST_SESSION_CLUSTER_FILTER";
@@ -42,8 +40,8 @@ public class MemcachedHttpServletRequestWrapper extends HttpServletRequestWrappe
 
         //按cookie中的jsessionid获取分布式session
         if (session == null) {
-            String jsessionid = SessionUtils.getSessionId(super.getCookies());
-            String ip = SessionUtils.getIpAddr((HttpServletRequest) super.getRequest());
+            String jsessionid = this.getSessionId(super.getCookies());
+            String ip = this.getIpAddr((HttpServletRequest) super.getRequest());
 
             if (jsessionid != null) {
                 session = MemcachedHttpSessionWrapper.get(cache, jsessionid, ip, this.getServletContext(),

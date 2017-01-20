@@ -1,12 +1,26 @@
-package com.github.linpn.dsession.utils;
+package com.github.linpn.dsession.wrapper;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+
 
 /**
- * 工具类
+ * 基类
+ *
+ * @author Linpn
  */
-public class SessionUtils {
+public class BaseHttpServletRequestWrapper extends HttpServletRequestWrapper {
+
+    /**
+     * Constructs a request object wrapping the given request.
+     *
+     * @param request request
+     * @throws IllegalArgumentException if the request is null
+     */
+    public BaseHttpServletRequestWrapper(HttpServletRequest request) {
+        super(request);
+    }
 
     /**
      * 从Cookie或url中获取JSESSIONID
@@ -34,15 +48,16 @@ public class SessionUtils {
      */
     public static String getIpAddr(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {
             ip = request.getHeader("Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {
             ip = request.getHeader("WL-Proxy-Client-IP");
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+        if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {
             ip = request.getRemoteAddr();
         }
         return ip;
     }
+
 }
