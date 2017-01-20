@@ -1,0 +1,6 @@
+<repositories>
+    <repository>
+        <id>tools-mvn-repository</id>
+        <url>https://raw.githubusercontent.com/linpn/tools/master/mvn-repository</url>
+    </repository>
+</repositories>
