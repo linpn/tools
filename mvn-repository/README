@@ -4,3 +4,8 @@
         <url>https://raw.githubusercontent.com/linpn/tools/master/mvn-repository</url>
     </repository>
 </repositories>
+
+
+gpg --keyserver hkp://pool.sks-keyservers.net --send-keys 8BBB3339
+
+mvn clean deploy -P sonatype-oss-release -Darguments="gpg.passphrase=***"
