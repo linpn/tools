@@ -4,6 +4,7 @@ import com.github.linpn.dsession.wrapper.RedisHttpServletRequestWrapper;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.filter.GenericFilterBean;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -23,6 +24,7 @@ public class RedisSessionClusterFilter extends GenericFilterBean {
 
     private static RedisTemplate<String, Object> cache;
 
+    private String redisTemplate;   // RedisTemplate 的 bean id
     private String hostName = "localhost";
     private int port = 6379;
     private int maxTotal = 8;
@@ -33,19 +35,22 @@ public class RedisSessionClusterFilter extends GenericFilterBean {
         try {
             //创建redisTemplate客户端
             if (cache == null) {
-                JedisPoolConfig poolConfig = new JedisPoolConfig();
-                poolConfig.setMaxTotal(maxTotal);
-                JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
-                connectionFactory.setHostName(hostName);
-                connectionFactory.setPort(port);
-                connectionFactory.setPoolConfig(poolConfig);
-                cache = new RedisTemplate();
-                cache.setConnectionFactory(connectionFactory);
-                cache.setKeySerializer(new StringRedisSerializer());
-                cache.setHashKeySerializer(new StringRedisSerializer());
+                if (redisTemplate != null && !redisTemplate.equals("")) {
+                    cache = ContextLoader.getCurrentWebApplicationContext().getBean(redisTemplate, RedisTemplate.class);
+                } else {
+                    JedisPoolConfig poolConfig = new JedisPoolConfig();
+                    poolConfig.setMaxTotal(maxTotal);
+                    JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
+                    connectionFactory.setHostName(hostName);
+                    connectionFactory.setPort(port);
+                    connectionFactory.setPoolConfig(poolConfig);
+                    cache = new RedisTemplate();
+                    cache.setConnectionFactory(connectionFactory);
+                    cache.setKeySerializer(new StringRedisSerializer());
+                    cache.setHashKeySerializer(new StringRedisSerializer());
+                }
                 this.setFilterSuffix(filterSuffix);
             }
-
         } catch (Exception e) {
             throw new ServletException("创建RedisTemplate出错", e);
         }
@@ -62,6 +67,13 @@ public class RedisSessionClusterFilter extends GenericFilterBean {
         } else {
             chain.doFilter(request, response);
         }
+    }
+
+    /**
+     * RedisTemplate 的 bean id
+     */
+    public void setRedisTemplate(String redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
 
     public void setHostName(String hostName) {

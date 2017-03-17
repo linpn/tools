@@ -5,6 +5,7 @@ import net.rubyeye.xmemcached.MemcachedClient;
 import net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator;
 import net.rubyeye.xmemcached.transcoders.SerializingTranscoder;
 import net.rubyeye.xmemcached.utils.XMemcachedClientFactoryBean;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -23,7 +24,8 @@ public class MemcachedSessionClusterFilter extends GenericFilterBean {
 
     private static MemcachedClient cache;
 
-    private String servers = "localhost";
+    private String memcached;   // MemcachedClient 的 bean id
+    private String servers = "localhost:11211";
     private String filterSuffix = "*.js,*.css,*.png,*.jpg,*.gif,*.ico,*.tff,*.woff,*.svg,*.eot";
 
     @Override
@@ -31,12 +33,16 @@ public class MemcachedSessionClusterFilter extends GenericFilterBean {
         try {
             //创建memcachedClient客户端
             if (cache == null) {
-                XMemcachedClientFactoryBean builder = new XMemcachedClientFactoryBean();
-                builder.setServers(servers);
-                builder.setConnectionPoolSize(5);
-                builder.setSessionLocator(new KetamaMemcachedSessionLocator());
-                builder.setTranscoder(new SerializingTranscoder());
-                cache = (MemcachedClient) builder.getObject();
+                if (memcached != null && !memcached.equals("")) {
+                    cache = ContextLoader.getCurrentWebApplicationContext().getBean(memcached, MemcachedClient.class);
+                } else {
+                    XMemcachedClientFactoryBean builder = new XMemcachedClientFactoryBean();
+                    builder.setServers(servers);
+                    builder.setConnectionPoolSize(5);
+                    builder.setSessionLocator(new KetamaMemcachedSessionLocator());
+                    builder.setTranscoder(new SerializingTranscoder());
+                    cache = (MemcachedClient) builder.getObject();
+                }
                 this.setFilterSuffix(filterSuffix);
             }
         } catch (Exception e) {
@@ -57,6 +63,12 @@ public class MemcachedSessionClusterFilter extends GenericFilterBean {
         }
     }
 
+    /**
+     * MemcachedClient 的 bean id
+     */
+    public void setMemcached(String memcached) {
+        this.memcached = memcached;
+    }
 
     public void setServers(String servers) {
         this.servers = servers;
