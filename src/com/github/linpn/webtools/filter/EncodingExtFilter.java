@@ -24,7 +24,6 @@ public class EncodingExtFilter extends CharacterEncodingFilter {
         HttpServletExtResponse res = new HttpServletExtResponse(response);
         req.setCharacterEncoding(this.encoding);
         res.setCharacterEncoding(this.encoding);
-        res.setContentType("text/html");
         super.doFilterInternal(req, res, filterChain);
     }
 
