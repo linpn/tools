@@ -15,11 +15,22 @@ import java.io.IOException;
  */
 public class EncodingExtFilter extends CharacterEncodingFilter {
 
+    private final static String[] urls = {".html", ".text", ".js", ".css", ".png", ".jpg", ".gif", ".ico", ".tff", ".woff", ".svg", ".eot"};
+
     private String encoding;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        // 排除静态
+        String path = request.getServletPath();
+        for (String str : urls) {
+            if (path.indexOf(str) > 0){
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
+
         HttpServletExtRequest req = new HttpServletExtRequest(request);
         HttpServletExtResponse res = new HttpServletExtResponse(response);
         req.setCharacterEncoding(this.encoding);
